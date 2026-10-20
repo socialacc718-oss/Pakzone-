@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PAK ZON ELECTRONICS</title>
+    <script>
+      // Single Page App redirect for GitHub Pages
+      // Redirects 404 paths back to base path with query or hash
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      var repoName = l.pathname.split('/')[1] || '';
+      var redirectUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '');
+      if (repoName) {
+        redirectUrl += '/' + repoName + '/';
+      } else {
+        redirectUrl += '/';
+      }
+      window.location.replace(redirectUrl);
+    </script>
+  </head>
+  <body>
+    Redirecting to PAK ZON ELECTRONICS...
+  </body>
+</html>

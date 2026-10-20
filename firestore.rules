@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email == "socialacc718@gmail.com"
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Authorized Admins
+    match /admins/{adminUid} {
+      allow read: if isSignedIn() && (request.auth.uid == adminUid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // Products collection: public can read published products, admins can manage all
+    match /products/{productId} {
+      allow read: if isValidId(productId) && (resource.data.isPublished == true || isAdmin());
+      allow write: if isValidId(productId) && isAdmin();
+    }
+
+    // Orders collection: customers can create orders, admins can view and update status
+    match /orders/{orderId} {
+      allow create: if isValidId(orderId) &&
+        request.resource.data.total is number &&
+        request.resource.data.orderNumber is string &&
+        request.resource.data.status == "placed";
+      allow read: if isValidId(orderId) && (
+        isAdmin() ||
+        (isSignedIn() && resource.data.customerEmail == request.auth.token.email)
+      );
+      allow update, delete: if isValidId(orderId) && isAdmin();
+    }
+
+    // Hero banners and promotional slides
+    match /banners/{bannerId} {
+      allow read: if isValidId(bannerId);
+      allow write: if isValidId(bannerId) && isAdmin();
+    }
+
+    // Store settings (policies, contact info, free shipping threshold)
+    match /settings/{settingId} {
+      allow read: if isValidId(settingId);
+      allow write: if isValidId(settingId) && isAdmin();
+    }
+  }
+}

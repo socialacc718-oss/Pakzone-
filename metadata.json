@@ -1,0 +1,6 @@
+{
+  "name": "PAK ZON ELECTRONICS - Premium 3D Electronics Store",
+  "description": "Experience next-generation shopping at PAK ZON ELECTRONICS. Premium smartphones, laptops, audio gear, and cutting-edge tech with realistic 3D presentations, fast delivery, and secure checkout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

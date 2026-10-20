@@ -1,0 +1,115 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Store products including smartphones, electronics, specs, and stock",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "brand": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "category": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "price": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "discountPercent": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "specs": { "type": "string", "maxLength": 200 },
+        "inStock": { "type": "boolean" },
+        "stockCount": { "type": "number" },
+        "isFeatured": { "type": "boolean" },
+        "isBestSeller": { "type": "boolean" },
+        "isDeal": { "type": "boolean" },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "brand", "category", "price", "imageUrl", "isPublished"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase orders and status tracking",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string", "maxLength": 30 },
+        "customerName": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "customerEmail": { "type": "string", "maxLength": 100 },
+        "customerPhone": { "type": "string", "maxLength": 30 },
+        "shippingAddress": { "type": "string", "maxLength": 200 },
+        "city": { "type": "string", "maxLength": 60 },
+        "postalCode": { "type": "string", "maxLength": 20 },
+        "paymentMethod": { "type": "string", "maxLength": 30 },
+        "subtotal": { "type": "number" },
+        "shippingCost": { "type": "number" },
+        "total": { "type": "number" },
+        "status": { "type": "string", "enum": ["placed", "processing", "shipped", "out_for_delivery", "delivered", "cancelled"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["orderNumber", "customerName", "customerEmail", "customerAddress", "total", "status"]
+    },
+    "Banner": {
+      "title": "Banner",
+      "description": "Homepage hero banners and promotions",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 100 },
+        "subtitle": { "type": "string", "maxLength": 150 },
+        "badge": { "type": "string", "maxLength": 50 },
+        "description": { "type": "string", "maxLength": 300 },
+        "buttonText": { "type": "string", "maxLength": 40 },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "isActive": { "type": "boolean" },
+        "order": { "type": "number" }
+      },
+      "required": ["title", "subtitle", "isActive"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "Global store configuration and customer-facing settings",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string", "maxLength": 80 },
+        "announcementText": { "type": "string", "maxLength": 200 },
+        "contactEmail": { "type": "string", "maxLength": 100 },
+        "contactPhone": { "type": "string", "maxLength": 40 },
+        "freeShippingThreshold": { "type": "number" },
+        "currencySymbol": { "type": "string", "maxLength": 5 }
+      },
+      "required": ["storeName"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Explicit authorized administrators",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["admin", "superadmin"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Electronics product inventory"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders with status and fulfillment"
+    },
+    "/banners/{bannerId}": {
+      "schema": "Banner",
+      "description": "Store hero banners and promo slides"
+    },
+    "/settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Store configuration and customer policies"
+    },
+    "/admins/{adminUid}": {
+      "schema": "Admin",
+      "description": "Authorized administrators record"
+    }
+  }
+}

@@ -17,6 +17,7 @@ import { OrderTrackingModal } from './components/OrderTrackingModal';
 import { WhatsAppButton } from './components/WhatsAppButton';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { ArrowRight, Flame, Sparkles } from 'lucide-react';
+import { ScrollReveal, ScrollStaggerContainer, ScrollStaggerItem } from './components/ScrollReveal';
 
 const StoreContent: React.FC = () => {
   const { products, quickViewProduct, setQuickViewProduct } = useStore();
@@ -66,7 +67,7 @@ const StoreContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col font-['Plus_Jakarta_Sans',sans-serif] overflow-x-hidden">
       {/* Header */}
       <Header
         currentView={currentView}
@@ -76,126 +77,159 @@ const StoreContent: React.FC = () => {
       />
 
       {/* Main Storefront Body */}
-      <main className="flex-1">
+      <main className="flex-1 w-full overflow-x-hidden">
         {/* 1. Hero Banner */}
-        <HeroBanner />
+        <ScrollReveal direction="up" duration={0.6} yOffset={20}>
+          <HeroBanner />
+        </ScrollReveal>
 
         {/* 2. Value Props Bar */}
-        <ValueProps />
+        <ScrollReveal direction="up" duration={0.5} yOffset={25} delay={0.1}>
+          <ValueProps />
+        </ScrollReveal>
 
-        {/* 3. Popular Smartphones Section (Matching Reference Image) */}
+        {/* 3. Popular Smartphones Section */}
         <section id="products" className="py-8 sm:py-12 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-hidden">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-6 sm:mb-8">
-              <div>
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
-                  Popular Smartphones
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  Discover the most loved devices by our customers.
-                </p>
+            <ScrollReveal direction="up" duration={0.5}>
+              <div className="flex items-end justify-between mb-6 sm:mb-8">
+                <div>
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
+                    Popular Smartphones
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                    Discover the most loved devices by our customers.
+                  </p>
+                </div>
+
+                <a
+                  href="#all-products"
+                  className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  <span>View All</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
               </div>
+            </ScrollReveal>
 
-              <a
-                href="#all-products"
-                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
-              >
-                <span>View All</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-
-            {/* Product Grid: 1 col on mobile, 2 on mid, 4 on desktop */}
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {/* Product Grid with Staggered Upward Reveal */}
+            <ScrollStaggerContainer
+              staggerDelay={0.08}
+              className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+            >
               {(popularSmartphones.length > 0 ? popularSmartphones.slice(0, 4) : publishedProducts.slice(0, 4)).map(
                 (product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ScrollStaggerItem key={product.id} yOffset={30}>
+                    <ProductCard product={product} />
+                  </ScrollStaggerItem>
                 )
               )}
-            </div>
+            </ScrollStaggerContainer>
           </div>
         </section>
 
-        {/* 4. Mid-Page Promotional Banner (Matching Reference Image) */}
-        <PromoBanner onExploreDeals={() => {
-          const el = document.getElementById('deals');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }} />
+        {/* 4. Mid-Page Promotional Banner */}
+        <ScrollReveal direction="up" duration={0.6} yOffset={35}>
+          <PromoBanner onExploreDeals={() => {
+            const el = document.getElementById('deals');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }} />
+        </ScrollReveal>
 
         {/* 5. Shop by Brand */}
-        <BrandFilter
-          selectedBrand={selectedBrand}
-          onSelectBrand={(brand) => setSelectedBrand(brand)}
-        />
+        <ScrollReveal direction="up" duration={0.5} yOffset={25}>
+          <BrandFilter
+            selectedBrand={selectedBrand}
+            onSelectBrand={(brand) => setSelectedBrand(brand)}
+          />
+        </ScrollReveal>
 
-        {/* 6. Best Deals Section (Matching Reference Image) */}
+        {/* 6. Best Deals Section */}
         <section id="deals" className="py-8 sm:py-12 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-hidden">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-6 sm:mb-8">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
-                    <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-rose-500" />
-                    Special Promotions
-                  </span>
+            <ScrollReveal direction="up" duration={0.5}>
+              <div className="flex items-end justify-between mb-6 sm:mb-8">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
+                      <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-rose-500" />
+                      Special Promotions
+                    </span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
+                    Best Deals
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500">
+                    Top offers, Limited time only.
+                  </p>
                 </div>
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
-                  Best Deals
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-500">
-                  Top offers, Limited time only.
-                </p>
+
+                <a
+                  href="#all-products"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700"
+                >
+                  <span>View All Deals</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
               </div>
+            </ScrollReveal>
 
-              <a
-                href="#all-products"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700"
-              >
-                <span>View All Deals</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <ScrollStaggerContainer
+              staggerDelay={0.08}
+              className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+            >
               {(dealProducts.length > 0 ? dealProducts.slice(0, 4) : publishedProducts.slice(4, 8)).map(
                 (product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ScrollStaggerItem key={product.id} yOffset={30}>
+                    <ProductCard product={product} />
+                  </ScrollStaggerItem>
                 )
               )}
-            </div>
+            </ScrollStaggerContainer>
           </div>
         </section>
 
         {/* 7. Categories Section */}
-        <CategoriesSection
-          selectedCategory={selectedCategory}
-          onSelectCategory={(cat) => setSelectedCategory(cat)}
-        />
+        <ScrollReveal direction="up" duration={0.6} yOffset={30}>
+          <CategoriesSection
+            selectedCategory={selectedCategory}
+            onSelectCategory={(cat) => setSelectedCategory(cat)}
+          />
+        </ScrollReveal>
 
-        {/* 8. Full Electronics Catalog (If filtered or browsing all) */}
+        {/* 8. Full Electronics Catalog */}
         <section id="all-products" className="py-8 sm:py-12 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-hidden">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-6 sm:mb-8">
-              <div>
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
-                  Explore Full Catalog
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  Showing {allFilteredCatalog.length} flagship devices and accessories
-                </p>
+            <ScrollReveal direction="up" duration={0.5}>
+              <div className="flex items-end justify-between mb-6 sm:mb-8">
+                <div>
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
+                    Explore Full Catalog
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                    Showing {allFilteredCatalog.length} flagship devices and accessories
+                  </p>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <ScrollStaggerContainer
+              staggerDelay={0.06}
+              className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+            >
               {allFilteredCatalog.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ScrollStaggerItem key={product.id} yOffset={25}>
+                  <ProductCard product={product} />
+                </ScrollStaggerItem>
               ))}
-            </div>
+            </ScrollStaggerContainer>
           </div>
         </section>
 
         {/* 9. Stay Connected (Newsletter) */}
-        <StayConnected />
+        <ScrollReveal direction="up" duration={0.6} yOffset={30}>
+          <StayConnected />
+        </ScrollReveal>
       </main>
 
       {/* Footer */}

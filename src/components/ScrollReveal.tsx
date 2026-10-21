@@ -14,11 +14,11 @@ interface ScrollRevealProps extends HTMLMotionProps<'div'> {
 export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
   delay = 0,
-  duration = 0.55,
-  yOffset = 30,
+  duration = 0.6,
+  yOffset = 40,
   direction = 'up',
   className = '',
-  once = true,
+  once = false,
   ...props
 }) => {
   const getInitialPosition = () => {
@@ -57,11 +57,11 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     <motion.div
       initial={getInitialPosition()}
       whileInView={getTargetPosition()}
-      viewport={{ once, margin: '-60px' }}
+      viewport={{ once, amount: 0.12 }}
       transition={{
         duration,
         delay,
-        ease: [0.21, 0.47, 0.32, 0.98],
+        ease: [0.16, 1, 0.3, 1],
       }}
       className={className}
       {...props}
@@ -75,12 +75,13 @@ export const ScrollStaggerContainer: React.FC<{
   children: React.ReactNode;
   className?: string;
   staggerDelay?: number;
-}> = ({ children, className = '', staggerDelay = 0.08 }) => {
+  once?: boolean;
+}> = ({ children, className = '', staggerDelay = 0.08, once = false }) => {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once, amount: 0.08 }}
       variants={{
         hidden: {},
         visible: {
@@ -100,17 +101,18 @@ export const ScrollStaggerItem: React.FC<{
   children: React.ReactNode;
   className?: string;
   yOffset?: number;
-}> = ({ children, className = '', yOffset = 25 }) => {
+}> = ({ children, className = '', yOffset = 40 }) => {
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: yOffset },
+        hidden: { opacity: 0, y: yOffset, scale: 0.96 },
         visible: {
           opacity: 1,
           y: 0,
+          scale: 1,
           transition: {
-            duration: 0.5,
-            ease: [0.21, 0.47, 0.32, 0.98],
+            duration: 0.6,
+            ease: [0.16, 1, 0.3, 1],
           },
         },
       }}
